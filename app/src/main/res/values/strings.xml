@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Enter your SciCumulus username and password </string>
+    <string name="app_name">SciLightning</string>
+    <string name="your_email_label">Digit your e-mail</string>
+    <string name="register_button">Register!</string>
+    <string name="password_label">Digit your password</string>
+    <string name="msgTickerLoginFailed">Login Failed</string>
+    <string name="msgLoginFailed">Incorrect username or password</string>
+    <string name="msgTickerRegisterSuccess">Device registered with Success.</string>
+    <string name="msgRegisterSuccess">This device was successfully registered for user ?</string>
+    <string name="msgNotRegistered">This device is not registered to receive SciLightning Notifications</string>
+    <string name="msgNoMessage">No message was received yet</string>
+</resources>

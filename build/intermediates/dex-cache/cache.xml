@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\juliano\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\13.0.0\support-v4-13.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3fe75433da602500cc71fcc1c46e5550291dd45d">
+        <dex dex="C:\Users\juliano\AndroidStudioProjects\scilightining-android-migrado\app\build\intermediates\pre-dexed\debug\support-v4-13.0.0-74b23d0a70a358f33522e25bae6e2cd1136f892b.jar" />
+    </item>
+    <item
+        jar="C:\Users\juliano\AndroidStudioProjects\scilightining-android-migrado\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\3.1.59\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2dd7b1a9ea65bb03d9cd16df777eeaf537a1fc81">
+        <dex dex="C:\Users\juliano\AndroidStudioProjects\scilightining-android-migrado\app\build\intermediates\pre-dexed\debug\classes-f61cb8678c71528046bc3842f35cde09d737d021.jar" />
+    </item>
+
+</items>
