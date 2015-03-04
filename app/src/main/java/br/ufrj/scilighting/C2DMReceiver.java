@@ -215,8 +215,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		String messageComplete = intent.getExtras().getString("message");
-			
-		
+
 		StringTokenizer st = new StringTokenizer(messageComplete,"|");
 		
 		
