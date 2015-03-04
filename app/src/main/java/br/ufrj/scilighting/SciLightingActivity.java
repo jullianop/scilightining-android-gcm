@@ -33,42 +33,21 @@ public class SciLightingActivity extends Activity {
 	};
 	
 	@Override
-protected void onResume() {
+    protected void onResume() {
 		super.onResume();
         checkPlayServices();
 		// verifyRegistered();
-		
-		
+
 	};
 	
 	
 	@Override
 	public void onAttachedToWindow()  {
 			super.onAttachedToWindow();
-			
 			verifyRegistered();
-			
-			
-		};
+
+	};
 		
-		@Override
-		protected void onRestart() {
-			// TODO Auto-generated method stub
-			super.onRestart();
-			//verifyRegistered();
-		}
-		
-		@Override
-		protected void onRestoreInstanceState(Bundle savedInstanceState) {
-			// TODO Auto-generated method stub
-			super.onRestoreInstanceState(savedInstanceState);
-			//verifyRegistered();
-			
-			
-			
-		}
-		
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -77,10 +56,8 @@ protected void onResume() {
         setContentView(R.layout.main);
           
         Button button = (Button)findViewById(R.id.buttonRegisterNow);
-        
         button.setOnClickListener(clickRegisterNowListener);
-        
-        
+
 		//verifyRegistered();
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
@@ -88,7 +65,6 @@ protected void onResume() {
         
 
     }
-	
 	
 
 	private void verifyRegistered() {
