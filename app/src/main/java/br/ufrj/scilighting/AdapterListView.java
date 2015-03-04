@@ -42,7 +42,7 @@ public class AdapterListView extends BaseAdapter {
     }
 
     /**
-     * Sem implementação
+     * Sem implementacaoo
      *
      * @param position
      * @return
@@ -52,13 +52,13 @@ public class AdapterListView extends BaseAdapter {
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        //Pega o item de acordo com a posção.
+        //Pega o item de acordo com a posicao.
         ItemListView item = itens.get(position);
         //infla o layout para podermos preencher os dados
         view = mInflater.inflate(R.layout.notificationsitemlist, null);
 
         //atravez do layout pego pelo LayoutInflater, pegamos cada id relacionado
-        //ao item e definimos as informações.
+        //ao item e definimos as informacoes.
 
         ((TextView) view.findViewById(R.id.itemtext1)).setText(item.getText());
         ((TextView) view.findViewById(R.id.itemtext2)).setText(item.getText2());
