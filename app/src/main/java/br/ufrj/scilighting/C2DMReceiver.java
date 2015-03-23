@@ -214,7 +214,80 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		String messageComplete = intent.getExtras().getString("message");
+
+
+        SharedPreferences settings = getApplicationPreferences();
+        String login = settings.getString("login", "");
+        try {
+
+            String data = URLEncoder.encode("login", "UTF-8") + "="
+                    + URLEncoder.encode(login, "UTF-8");
+
+            URL url = new URL(Config.SERVER_URL + "/SyncNotifications");
+            URLConnection connection = url.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestProperty("METHOD", "POST");
+            HttpURLConnection httpConnection = (HttpURLConnection) connection;
+            httpConnection.setRequestMethod("POST");
+
+            OutputStreamWriter wr = new OutputStreamWriter(
+                    httpConnection.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            // Get the response
+            BufferedReader rd = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            String line;
+		    /*while ((line = rd.readLine()) != null) {
+		        Log.d("C2DM", line);
+		    }*/
+            //while(rd.)
+
+            SQLiteOpenHelper dbHelper = new DefaultDBHelper(this, DefaultDBHelper.MY_DATABASE_NAME, null, 1);
+            SQLiteDatabase myDB = this.openOrCreateDatabase(DefaultDBHelper.MY_DATABASE_NAME, SQLiteDatabase.OPEN_READWRITE, null);
+            try {
+             /* Create the Database (no Errors if it already exists) */
+                myDB = dbHelper.getWritableDatabase();
+                dbHelper.onCreate(myDB);
+
+                while ((line = rd.readLine()) != null) {
+                    StringTokenizer st = new StringTokenizer(line,"|");
+
+                    String workflow = st.nextToken();
+                    String message = st.nextToken();
+                    String type = st.nextToken();
+                    String time = st.nextToken();
+
+                    myDB.execSQL("INSERT INTO "
+                            + DefaultDBHelper.NOTIFICATIONS_TABLE
+                            + " (WorkFlow, Notification, Time, New, type )"
+                            + " VALUES ('"+ workflow+"','"+message+"',"+time+", 1,"+type +" );");
+
+                    Log.d("C2DM", line);
+                }
+
+            } catch (SQLiteException e) {
+                Toast.makeText(this, e.getMessage()+ e.getStackTrace(), Toast.LENGTH_LONG).show();
+
+            } finally {
+                if (myDB != null)
+                    myDB.close();
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+
+    protected void onMessageAntigo(Context context, Intent intent) {
+
+        String messageComplete = intent.getExtras().getString("message");
 
 		StringTokenizer st = new StringTokenizer(messageComplete,"|");
 		
@@ -235,7 +308,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	    
 	    
 	    
-         SQLiteOpenHelper dbHelper = new DefaultDBHelper(this, DefaultDBHelper.MY_DATABASE_NAME, null, 1);
+        SQLiteOpenHelper dbHelper = new DefaultDBHelper(this, DefaultDBHelper.MY_DATABASE_NAME, null, 1);
         SQLiteDatabase myDB = this.openOrCreateDatabase(DefaultDBHelper.MY_DATABASE_NAME, SQLiteDatabase.OPEN_READWRITE, null);
         try { 
              /* Create the Database (no Errors if it already exists) */
@@ -246,6 +319,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                     + DefaultDBHelper.NOTIFICATIONS_TABLE 
                     + " (WorkFlow, Notification, Time, New, type )" 
                     + " VALUES ('"+ workflow+"','"+message+"', strftime('%s','now'), 1,"+type +" );"); 
+
+
 
                 
                    
@@ -327,7 +402,14 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
 	}
 
-}
+        public SharedPreferences getApplicationPreferences() {
+            return getSharedPreferences(Config.PREFS_NAME,
+                    Context.MODE_PRIVATE);
+        }
+
+
+
+    }
 /*
  * 
  * 
@@ -391,3 +473,4 @@ public class C2DMReceiver extends C2DMBaseReceiver {
  * if (autoSyncDesired == true) { C2DMessaging.register(context,
  * Config.C2DM_SENDER); } else { C2DMessaging.unregister(context); } } } }
  */
+

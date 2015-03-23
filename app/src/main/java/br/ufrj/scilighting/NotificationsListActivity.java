@@ -177,7 +177,7 @@ public class NotificationsListActivity extends Activity  implements OnItemClickL
        // this.setListAdapter(new ArrayAdapter(this, R.layout.notificationsitemlist, itens));
         
         listView.setAdapter(adapterListView);
-        //Cor quando a lista é selecionada para ralagem.
+        //Cor quando a lista e selecionada para ralagem.
         /*  //listView.setCacheColorHint(Color.TRANSPARENT);
         */
         
@@ -186,11 +186,11 @@ public class NotificationsListActivity extends Activity  implements OnItemClickL
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		    // Toast.makeText(this, "Você Clicou em: ", Toast.LENGTH_LONG ).show();
+		    // Toast.makeText(this, "Vocï¿½ Clicou em: ", Toast.LENGTH_LONG ).show();
 			 //Pega o item que foi selecionado.
 	        ItemListView item = adapterListView.getItem(arg2);
-	        //Demostração
-/*	        Toast.makeText(this, "Você Clicou em: " + item.getText(), Toast.LENGTH_LONG).show();
+	        //Demostraï¿½ï¿½o
+/*	        Toast.makeText(this, "Vocï¿½ Clicou em: " + item.getText(), Toast.LENGTH_LONG).show();
 */			
 			// Get the item that was clicked
 			//Object o = this.getListAdapter().getItem(position);

@@ -44,7 +44,7 @@ public class AdapterWorkflowListView extends BaseAdapter {
     }
 
     /**
-     * Sem implementação
+     * Sem implementa??o
      *
      * @param position
      * @return
@@ -54,7 +54,7 @@ public class AdapterWorkflowListView extends BaseAdapter {
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        //Pega o item de acordo com a posção.
+        //Pega o item de acordo com a pos??o.
         ItemWorkflowListView item = itens.get(position);
         //infla o layout para podermos preencher os dados
         view = mInflater.inflate(R.layout.notificationsworkflowitemlist, null);
@@ -67,7 +67,7 @@ public class AdapterWorkflowListView extends BaseAdapter {
         
         
         //atravez do layout pego pelo LayoutInflater, pegamos cada id relacionado
-        //ao item e definimos as informações.
+        //ao item e definimos as informa??es.
 
         ((TextView) view.findViewById(R.id.notificationText)).setText(item.getNotification());
         ((TextView) view.findViewById(R.id.notifcationReceivedTime)).setText(item.getTime());

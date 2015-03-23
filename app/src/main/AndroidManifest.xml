@@ -15,6 +15,7 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<!-- required for accessing the device ID -->
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
 
 
@@ -52,10 +53,34 @@
                 <category android:name="br.ufrj.scilighting" />
             </intent-filter>
         </receiver>
-		
-		
-		
-		
+
+
+        <service
+            android:name="br.ufrj.scilighting.syncadapter.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <provider
+            android:name="br.ufrj.scilighting.syncadapter.StubProvider"
+            android:authorities="com.example.android.datasync.provider"
+            android:exported="false"
+            android:syncable="true"/>
+
+        <service
+            android:name="br.ufrj.scilighting.syncadapter.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
 		<!-- 
 		
 		<receiver android:name=".C2DMReceiver"

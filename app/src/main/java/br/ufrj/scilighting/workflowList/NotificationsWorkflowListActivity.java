@@ -198,7 +198,7 @@ public class NotificationsWorkflowListActivity extends Activity  implements OnIt
              // this.setListAdapter(new ArrayAdapter(this, R.layout.notificationsitemlist, itens));
               
               listView.setAdapter(adapterListView);
-              //Cor quando a lista é selecionada para ralagem.
+              //Cor quando a lista ? selecionada para ralagem.
               /*  //listView.setCacheColorHint(Color.TRANSPARENT);
               */
               
@@ -207,11 +207,11 @@ public class NotificationsWorkflowListActivity extends Activity  implements OnIt
 
       	@Override
       	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-      		    // Toast.makeText(this, "Você Clicou em: ", Toast.LENGTH_LONG ).show();
+      		    // Toast.makeText(this, "Voc? Clicou em: ", Toast.LENGTH_LONG ).show();
       			 //Pega o item que foi selecionado.
       	        ItemWorkflowListView item = adapterListView.getItem(arg2);
-      	        //Demostração
-/*      	        Toast.makeText(this, "Você Clicou em: " + item.getNotification(), Toast.LENGTH_LONG).show();
+      	        //Demostra??o
+/*      	        Toast.makeText(this, "Voc? Clicou em: " + item.getNotification(), Toast.LENGTH_LONG).show();
 */      			
       			// Get the item that was clicked
       			//Object o = this.getListAdapter().getItem(position);

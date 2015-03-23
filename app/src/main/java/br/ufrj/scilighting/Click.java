@@ -16,8 +16,8 @@ public class Click implements OnItemClickListener {
 		   
 /*			 //Pega o item que foi selecionado.
 	        ItemListView item = adapterListView.getItem(arg2);
-	        //Demostração
-	        Toast.makeText(this, "Você Clicou em: " + item.getText(), Toast.LENGTH_LONG).show();
+	        //Demostrao
+	        Toast.makeText(this, "Voc Clicou em: " + item.getText(), Toast.LENGTH_LONG).show();
 			
 			// Get the item that was clicked
 			//Object o = this.getListAdapter().getItem(position);
