@@ -35,6 +35,7 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +45,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import br.ufrj.scilighting.R.string;
@@ -218,10 +220,16 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
         SharedPreferences settings = getApplicationPreferences();
         String login = settings.getString("login", "");
+        long paramLastNotificationTime = settings.getLong(Config.PREF_LAST_NOTIFICATION_TIME, 0);
+
+
         try {
+
 
             String data = URLEncoder.encode("login", "UTF-8") + "="
                     + URLEncoder.encode(login, "UTF-8");
+            data += "&" + URLEncoder.encode("last", "UTF-8") + "="
+                    + URLEncoder.encode(String.valueOf(paramLastNotificationTime), "UTF-8");
 
             URL url = new URL(Config.SERVER_URL + "/SyncNotifications");
             URLConnection connection = url.openConnection();
@@ -250,7 +258,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
              /* Create the Database (no Errors if it already exists) */
                 myDB = dbHelper.getWritableDatabase();
                 dbHelper.onCreate(myDB);
-
+                int numberOfNotifications = 0;
+                long lastNotificationTime = 0;
                 while ((line = rd.readLine()) != null) {
                     StringTokenizer st = new StringTokenizer(line,"|");
 
@@ -259,13 +268,29 @@ public class C2DMReceiver extends C2DMBaseReceiver {
                     String type = st.nextToken();
                     String time = st.nextToken();
 
+                    long timeLong = Long.parseLong(time);
+
+                    lastNotificationTime= timeLong > lastNotificationTime ? timeLong : lastNotificationTime;
+
                     myDB.execSQL("INSERT INTO "
                             + DefaultDBHelper.NOTIFICATIONS_TABLE
                             + " (WorkFlow, Notification, Time, New, type )"
-                            + " VALUES ('"+ workflow+"','"+message+"',"+time+", 1,"+type +" );");
+                            + " VALUES ('"+ workflow+"','"+message+"',strftime('%s','now'), 1,"+type +" );");
 
                     Log.d("C2DM", line);
+                    numberOfNotifications++;
                 }
+
+                //If was received at least one notification
+                if(numberOfNotifications>0){
+                    String num = Integer.toString(numberOfNotifications);
+                    showUserNotification("SciLightning (" + num+")", num + " new notifications");
+
+                    Editor editor = settings.edit();
+                    editor.putLong(Config.PREF_LAST_NOTIFICATION_TIME, lastNotificationTime);
+                    editor.commit();
+                }
+
 
             } catch (SQLiteException e) {
                 Toast.makeText(this, e.getMessage()+ e.getStackTrace(), Toast.LENGTH_LONG).show();
@@ -353,8 +378,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 		PendingIntent contentIntent = PendingIntent.getActivity(this,
 				0, notificationIntent, 0);
 
-		notification.setLatestEventInfo(context, contentTitle,
-				contentText, contentIntent);
+		//notification.setLatestEventInfo(context, contentTitle,				contentText, contentIntent);
 
 		int HELLO_ID = 1;
 
@@ -394,13 +418,47 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
 	}
 
+    public void showUserNotification(String contentTitle, String contentText) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentTitle(contentTitle)
+                        .setContentText(contentText);
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, NotificationsListActivity.class);
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+                stackBuilder.addParentStack(NotificationsListActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setAutoCancel(true);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(1, mBuilder.build());
+
+
+        // TODO Auto-generated method stub
+
+    }
+
 	@Override
-	public void onError(Context context, String errorId) {
-		System.out.print("ola");
+         public void onError(Context context, String errorId) {
+        System.out.print("ola");
 
-		// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
-	}
+    }
 
         public SharedPreferences getApplicationPreferences() {
             return getSharedPreferences(Config.PREFS_NAME,

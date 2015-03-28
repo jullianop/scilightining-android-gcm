@@ -14,7 +14,7 @@ public class Config extends Activity {
 
 
     public static final String PREF_GCM_REGISTRATION_ID = "gcm_registration_id";
-
+    public static final String PREF_LAST_NOTIFICATION_TIME = "lastNotificationTime";
 
 
     @SuppressWarnings("unchecked")
